@@ -4,10 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>SHZ License Manager</title>
+<title>SHZ Control Center</title>
 
 <style>
-
 *{
     box-sizing:border-box;
     margin:0;
@@ -15,32 +14,41 @@
 }
 
 :root{
-    --red:#ff1e3c;
-    --red2:#ff4960;
-    --bg:#050505;
-    --card:#0c0c0f;
-    --border:rgba(255,255,255,.08);
-    --text:#f5f5f5;
-    --muted:#777;
+    --red:#ff1738;
+    --red2:#ff5268;
+    --green:#42f59b;
+    --yellow:#ffc857;
+    --bg:#050506;
+    --panel:#0b0b0e;
+    --panel2:#101014;
+    --border:rgba(255,255,255,.075);
+    --text:#f5f5f7;
+    --muted:#74747d;
+    --muted2:#484850;
+}
+
+html{
+    scroll-behavior:smooth;
 }
 
 body{
     min-height:100vh;
     background:
-        radial-gradient(circle at 50% -10%,rgba(255,20,55,.16),transparent 35%),
-        radial-gradient(circle at 0% 100%,rgba(255,20,55,.07),transparent 30%),
-        #050505;
+        radial-gradient(circle at 75% -10%,rgba(255,20,55,.16),transparent 28%),
+        radial-gradient(circle at -10% 70%,rgba(255,20,55,.08),transparent 25%),
+        #050506;
     color:var(--text);
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Arial,
-        sans-serif;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
     overflow-x:hidden;
 }
 
-/* Background */
+button,input{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
 
 .bg-grid{
     position:fixed;
@@ -50,111 +58,345 @@ body{
     background-image:
         linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),
         linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);
-    background-size:35px 35px;
+    background-size:36px 36px;
 }
 
-/* Main */
+/* =========================
+   APP
+========================= */
 
-.container{
-    width:min(100%,520px);
-    margin:auto;
-    padding:25px 17px 45px;
-    position:relative;
+.app{
+    min-height:100vh;
+    display:flex;
 }
 
-/* Header */
+/* =========================
+   SIDEBAR
+========================= */
 
-.header{
+.sidebar{
+    position:fixed;
+    z-index:20;
+    left:0;
+    top:0;
+    bottom:0;
+    width:245px;
+    padding:24px 15px;
+    background:rgba(7,7,9,.88);
+    border-right:1px solid var(--border);
+    backdrop-filter:blur(25px);
+}
+
+.logo-area{
     display:flex;
     align-items:center;
-    justify-content:space-between;
-    margin-bottom:30px;
-}
-
-.brand{
-    display:flex;
-    align-items:center;
-    gap:12px;
+    gap:11px;
+    padding:3px 9px 27px;
 }
 
 .logo{
-    width:48px;
-    height:48px;
+    width:45px;
+    height:45px;
     border-radius:14px;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:18px;
+    font-size:15px;
     font-weight:1000;
     letter-spacing:2px;
-    color:white;
-    background:
-        linear-gradient(145deg,#171717,#080808);
-    border:1px solid rgba(255,40,65,.45);
+    background:linear-gradient(145deg,#18181b,#080809);
+    border:1px solid rgba(255,30,60,.5);
     box-shadow:
         0 0 25px rgba(255,20,50,.14),
-        inset 0 0 20px rgba(255,255,255,.02);
+        inset 0 0 15px rgba(255,255,255,.025);
 }
 
-.brand-text h1{
-    font-size:18px;
+.logo-name{
+    font-size:14px;
     font-weight:950;
-    letter-spacing:3px;
-}
-
-.brand-text p{
-    font-size:9px;
-    color:var(--red);
-    font-weight:800;
     letter-spacing:2px;
-    margin-top:4px;
 }
 
-.admin-status{
+.logo-sub{
+    margin-top:3px;
+    color:var(--red);
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.nav-label{
+    color:#3f3f46;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:2px;
+    padding:0 11px 8px;
+}
+
+.nav{
     display:flex;
-    align-items:center;
-    gap:6px;
-    padding:8px 11px;
-    border:1px solid var(--border);
-    border-radius:20px;
-    background:rgba(255,255,255,.025);
-    font-size:8px;
-    font-weight:800;
-    letter-spacing:1px;
+    flex-direction:column;
+    gap:5px;
+}
+
+.nav button{
+    position:relative;
+    width:100%;
+    height:45px;
+    border:1px solid transparent;
+    border-radius:11px;
+    background:transparent;
+    color:#77777f;
+    text-align:left;
+    padding:0 13px;
+    font-size:10px;
+    font-weight:850;
+    letter-spacing:.7px;
+    transition:.2s;
+}
+
+.nav button span{
+    display:inline-flex;
+    width:24px;
     color:#777;
 }
 
-.dot{
-    width:6px;
-    height:6px;
-    border-radius:50%;
-    background:#444;
+.nav button:hover{
+    background:rgba(255,255,255,.035);
+    color:#ddd;
 }
 
-/* Hero */
-
-.hero{
-    text-align:center;
-    margin:10px 0 28px;
+.nav button.active{
+    color:white;
+    background:linear-gradient(
+        90deg,
+        rgba(255,20,50,.14),
+        rgba(255,20,50,.035)
+    );
+    border-color:rgba(255,30,60,.16);
 }
 
-.hero h2{
-    font-size:31px;
-    font-weight:1000;
-    letter-spacing:-1px;
-    background:linear-gradient(180deg,#fff,#888);
-    -webkit-background-clip:text;
-    color:transparent;
+.nav button.active span{
+    color:var(--red);
 }
 
-.hero p{
-    margin-top:8px;
-    color:#666;
+.nav button.active:before{
+    content:"";
+    position:absolute;
+    left:-16px;
+    top:10px;
+    width:2px;
+    height:25px;
+    border-radius:4px;
+    background:var(--red);
+    box-shadow:0 0 12px var(--red);
+}
+
+.sidebar-bottom{
+    position:absolute;
+    bottom:22px;
+    left:15px;
+    right:15px;
+}
+
+.admin-mini{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:12px;
+    border:1px solid var(--border);
+    border-radius:13px;
+    background:rgba(255,255,255,.025);
+}
+
+.admin-avatar{
+    width:30px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:9px;
+    background:rgba(255,20,50,.1);
+    color:var(--red);
     font-size:11px;
+}
+
+.admin-name{
+    font-size:9px;
+    font-weight:900;
+}
+
+.admin-online{
+    margin-top:3px;
+    color:#555;
+    font-size:7px;
+}
+
+.admin-online i{
+    display:inline-block;
+    width:5px;
+    height:5px;
+    margin-right:4px;
+    border-radius:50%;
+    background:var(--green);
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+    width:calc(100% - 245px);
+    margin-left:245px;
+    padding:27px 32px 80px;
+}
+
+.topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:28px;
+}
+
+.page-title h1{
+    font-size:24px;
+    font-weight:950;
+    letter-spacing:-.5px;
+}
+
+.page-title p{
+    margin-top:5px;
+    color:#55555d;
+    font-size:9px;
     letter-spacing:1px;
 }
 
-/* Card */
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.api-status{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:9px 12px;
+    border-radius:20px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.025);
+    color:#666;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.api-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 10px rgba(66,245,155,.6);
+}
+
+.mobile-menu{
+    display:none;
+}
+
+/* =========================
+   PAGES
+========================= */
+
+.page{
+    display:none;
+    animation:pageIn .3s ease;
+}
+
+.page.active{
+    display:block;
+}
+
+@keyframes pageIn{
+    from{
+        opacity:0;
+        transform:translateY(6px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:13px;
+    margin-bottom:16px;
+}
+
+.stat{
+    position:relative;
+    overflow:hidden;
+    min-height:120px;
+    padding:18px;
+    border:1px solid var(--border);
+    border-radius:17px;
+    background:
+        linear-gradient(145deg,
+        rgba(255,255,255,.045),
+        rgba(255,255,255,.012));
+    box-shadow:0 15px 40px rgba(0,0,0,.22);
+}
+
+.stat:after{
+    content:"";
+    position:absolute;
+    width:100px;
+    height:100px;
+    right:-45px;
+    bottom:-55px;
+    border-radius:50%;
+    background:rgba(255,20,50,.09);
+    filter:blur(20px);
+}
+
+.stat-label{
+    color:#55555e;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:1.6px;
+}
+
+.stat-value{
+    margin-top:11px;
+    font-size:29px;
+    font-weight:950;
+    letter-spacing:-1px;
+}
+
+.stat-note{
+    margin-top:6px;
+    color:#4d4d55;
+    font-size:7px;
+}
+
+.stat-note.green{
+    color:rgba(66,245,155,.75);
+}
+
+/* =========================
+   GRID
+========================= */
+
+.two-col{
+    display:grid;
+    grid-template-columns:1.35fr .85fr;
+    gap:15px;
+}
 
 .card{
     position:relative;
@@ -163,163 +405,280 @@ body{
         rgba(255,255,255,.045),
         rgba(255,255,255,.012));
     border:1px solid var(--border);
-    border-radius:20px;
-    padding:20px;
-    margin-bottom:15px;
+    border-radius:18px;
+    padding:19px;
     box-shadow:
-        0 15px 45px rgba(0,0,0,.35),
-        inset 0 1px rgba(255,255,255,.025);
+        0 15px 45px rgba(0,0,0,.3),
+        inset 0 1px rgba(255,255,255,.02);
     backdrop-filter:blur(15px);
+}
+
+.card + .card{
+    margin-top:15px;
+}
+
+.card-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:17px;
 }
 
 .card-title{
     display:flex;
     align-items:center;
     gap:9px;
-    font-size:10px;
+    color:#aaaab0;
+    font-size:9px;
     font-weight:900;
-    letter-spacing:2px;
-    color:#aaa;
-    margin-bottom:16px;
+    letter-spacing:1.5px;
 }
 
-.card-title span{
-    width:23px;
-    height:23px;
-    border-radius:7px;
+.card-title-icon{
+    width:25px;
+    height:25px;
     display:flex;
     align-items:center;
     justify-content:center;
-    background:rgba(255,25,55,.1);
+    border-radius:7px;
+    background:rgba(255,25,55,.09);
     color:var(--red);
 }
 
-/* Input */
-
-.input-wrap{
-    position:relative;
+.view-all{
+    border:0;
+    background:transparent;
+    color:var(--red2);
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:1px;
 }
 
-input{
+/* =========================
+   TABLE
+========================= */
+
+.table-wrap{
     width:100%;
-    height:52px;
-    border-radius:12px;
-    border:1px solid rgba(255,255,255,.08);
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    color:#45454c;
+    font-size:7px;
+    text-align:left;
+    font-weight:900;
+    letter-spacing:1px;
+    padding:0 10px 11px;
+    white-space:nowrap;
+}
+
+td{
+    border-top:1px solid rgba(255,255,255,.045);
+    padding:13px 10px;
+    color:#bdbdc3;
+    font-size:8px;
+    white-space:nowrap;
+}
+
+.key-cell{
+    color:#eee;
+    font-family:monospace;
+    font-size:8px;
+}
+
+.topic-cell{
+    color:#777;
+    font-family:monospace;
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    padding:5px 8px;
+    border-radius:20px;
+    font-size:6px;
+    font-weight:900;
+    letter-spacing:.6px;
+}
+
+.badge.active{
+    color:var(--green);
+    border:1px solid rgba(66,245,155,.18);
+    background:rgba(66,245,155,.055);
+}
+
+.badge.expired{
+    color:#ff6376;
+    border:1px solid rgba(255,30,60,.18);
+    background:rgba(255,30,60,.055);
+}
+
+.badge.pending{
+    color:var(--yellow);
+    border:1px solid rgba(255,200,87,.18);
+    background:rgba(255,200,87,.055);
+}
+
+/* =========================
+   QUICK ACTIONS
+========================= */
+
+.quick-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+}
+
+.quick{
+    height:65px;
+    padding:10px;
+    text-align:left;
+    border-radius:11px;
+    border:1px solid rgba(255,255,255,.055);
+    background:#09090b;
+    color:#999;
+    transition:.2s;
+}
+
+.quick:hover{
+    border-color:rgba(255,30,60,.3);
+    transform:translateY(-2px);
+}
+
+.quick strong{
+    display:block;
+    color:#ddd;
+    font-size:8px;
+    margin-bottom:5px;
+}
+
+.quick small{
+    color:#4c4c53;
+    font-size:6px;
+}
+
+/* =========================
+   LICENSE CREATE
+========================= */
+
+.input{
+    width:100%;
+    height:47px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.07);
+    outline:none;
     background:#080809;
     color:white;
-    outline:none;
-    padding:0 15px;
-    font-size:14px;
-    transition:.25s;
+    padding:0 13px;
+    font-size:11px;
+    transition:.2s;
 }
 
-input:focus{
-    border-color:rgba(255,30,60,.6);
-    box-shadow:0 0 0 3px rgba(255,30,60,.08);
+.input:focus{
+    border-color:rgba(255,30,60,.55);
+    box-shadow:0 0 0 3px rgba(255,30,60,.06);
 }
 
-input::placeholder{
-    color:#444;
+.input::placeholder{
+    color:#404047;
 }
 
-/* Duration */
+.form-label{
+    color:#55555d;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:1.4px;
+    margin-bottom:7px;
+}
+
+.form-group{
+    margin-bottom:14px;
+}
 
 .duration-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
-    gap:9px;
+    gap:8px;
 }
 
 .duration{
-    height:58px;
-    border-radius:12px;
-    border:1px solid rgba(255,255,255,.07);
+    min-height:55px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.065);
     background:#080809;
     color:#777;
-    cursor:pointer;
-    transition:.2s;
     text-align:left;
-    padding:0 14px;
+    padding:10px 12px;
+    transition:.2s;
 }
 
 .duration strong{
     display:block;
-    font-size:12px;
-    color:#ddd;
+    color:#ccc;
+    font-size:8px;
     margin-bottom:4px;
 }
 
 .duration small{
-    font-size:8px;
-    color:#555;
-    letter-spacing:.5px;
-}
-
-.duration:hover{
-    border-color:rgba(255,30,60,.35);
+    color:#4d4d53;
+    font-size:6px;
 }
 
 .duration.active{
-    background:
-        linear-gradient(135deg,
-        rgba(255,20,50,.18),
-        rgba(255,20,50,.04));
-    border-color:rgba(255,30,60,.7);
-    box-shadow:
-        0 0 20px rgba(255,20,50,.08);
+    border-color:rgba(255,30,60,.65);
+    background:rgba(255,20,50,.09);
+    box-shadow:0 0 18px rgba(255,20,50,.06);
 }
 
 .duration.active strong{
-    color:#fff;
+    color:white;
 }
-
-.duration.active small{
-    color:var(--red2);
-}
-
-/* Create button */
 
 .create-btn{
     width:100%;
-    height:57px;
-    border:none;
-    border-radius:14px;
-    margin-top:5px;
+    height:50px;
+    border:0;
+    border-radius:11px;
     color:white;
-    background:
-        linear-gradient(135deg,#ff1738,#a8001d);
-    font-size:11px;
+    background:linear-gradient(135deg,#ff1738,#a9001e);
+    font-size:8px;
     font-weight:1000;
-    letter-spacing:2px;
-    cursor:pointer;
-    box-shadow:
-        0 12px 30px rgba(255,20,50,.18);
+    letter-spacing:1.7px;
+    box-shadow:0 12px 28px rgba(255,20,50,.15);
     transition:.2s;
 }
 
+.create-btn:hover{
+    filter:brightness(1.08);
+}
+
 .create-btn:active{
-    transform:scale(.98);
+    transform:scale(.985);
 }
 
 .create-btn:disabled{
-    opacity:.55;
+    opacity:.5;
 }
-
-/* Loading */
 
 .loading{
     display:none;
-    align-items:center;
     justify-content:center;
-    gap:9px;
-    font-size:10px;
-    color:#aaa;
-    margin-top:15px;
+    align-items:center;
+    gap:8px;
+    margin-top:12px;
+    color:#777;
+    font-size:7px;
 }
 
 .spinner{
-    width:14px;
-    height:14px;
+    width:12px;
+    height:12px;
     border:2px solid #333;
     border-top-color:var(--red);
     border-radius:50%;
@@ -330,139 +689,380 @@ input::placeholder{
     to{transform:rotate(360deg)}
 }
 
-/* Result */
-
-.result{
+.error{
     display:none;
+    margin-top:12px;
+    padding:11px;
+    border-radius:9px;
+    color:#ff687a;
+    border:1px solid rgba(255,30,60,.2);
+    background:rgba(255,20,50,.05);
+    font-size:8px;
 }
 
-.success-box{
-    border:1px solid rgba(0,255,130,.18);
-    background:
-        linear-gradient(145deg,
-        rgba(0,255,130,.06),
-        rgba(255,255,255,.015));
+/* =========================
+   TOOLBAR
+========================= */
+
+.toolbar{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin-bottom:14px;
 }
 
-.success-header{
+.search{
+    flex:1;
+    position:relative;
+}
+
+.search input{
+    height:43px;
+    padding-left:38px;
+}
+
+.search-icon{
+    position:absolute;
+    left:13px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#4b4b52;
+    font-size:11px;
+}
+
+.filter{
+    height:43px;
+    padding:0 13px;
+    border-radius:9px;
+    border:1px solid var(--border);
+    background:#09090b;
+    color:#888;
+    outline:none;
+    font-size:8px;
+}
+
+/* =========================
+   TOPIC
+========================= */
+
+.topic-card{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    margin-bottom:18px;
+    gap:15px;
+    padding:15px;
+    margin-bottom:8px;
+    border:1px solid rgba(255,255,255,.055);
+    border-radius:12px;
+    background:#09090b;
 }
 
-.success-title{
-    color:#58ff9c;
-    font-size:11px;
-    font-weight:1000;
-    letter-spacing:1.5px;
+.topic-info{
+    min-width:0;
 }
 
-.status-pill{
-    color:#58ff9c;
-    border:1px solid rgba(88,255,156,.25);
-    background:rgba(88,255,156,.06);
-    padding:6px 9px;
-    border-radius:20px;
-    font-size:8px;
-    font-weight:900;
-}
-
-.data-row{
-    margin-bottom:11px;
-}
-
-.data-label{
-    color:#555;
-    font-size:8px;
-    font-weight:900;
-    letter-spacing:1.5px;
-    margin-bottom:6px;
-}
-
-.data-value{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    min-height:43px;
-    padding:0 11px;
-    border-radius:10px;
-    background:#080809;
-    border:1px solid rgba(255,255,255,.06);
-}
-
-.data-value code{
-    flex:1;
+.topic-name{
+    color:#ddd;
+    font-family:monospace;
+    font-size:9px;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
-    color:#ddd;
-    font-size:11px;
-    font-family:monospace;
 }
 
-.copy{
-    border:none;
-    background:rgba(255,255,255,.06);
-    color:#aaa;
-    border-radius:7px;
-    padding:7px 9px;
-    font-size:8px;
-    font-weight:900;
-    cursor:pointer;
-}
-
-.copy:active{
-    transform:scale(.95);
-}
-
-/* Error */
-
-.error{
-    display:none;
-    padding:13px;
-    border-radius:10px;
-    border:1px solid rgba(255,30,60,.25);
-    background:rgba(255,20,50,.06);
-    color:#ff6578;
-    font-size:10px;
-    line-height:1.5;
-}
-
-/* Footer */
-
-.footer{
-    text-align:center;
-    margin-top:28px;
-}
-
-.footer-main{
-    font-size:8px;
-    color:#444;
-    font-weight:800;
-    letter-spacing:2px;
-}
-
-.footer-sub{
-    margin-top:7px;
+.topic-meta{
+    margin-top:5px;
+    color:#4e4e55;
     font-size:7px;
-    color:#292929;
+}
+
+.topic-actions{
+    display:flex;
+    gap:5px;
+}
+
+.small-btn{
+    height:29px;
+    padding:0 9px;
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:7px;
+    background:#111114;
+    color:#777;
+    font-size:7px;
+    font-weight:900;
+}
+
+.small-btn:hover{
+    color:white;
+    border-color:rgba(255,30,60,.3);
+}
+
+.small-btn.danger:hover{
+    color:#ff6175;
+    border-color:rgba(255,30,60,.3);
+}
+
+/* =========================
+   LAUNCHER
+========================= */
+
+.launcher-hero{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:24px;
+    border:1px solid var(--border);
+    border-radius:18px;
+    background:
+        radial-gradient(circle at 90% 50%,rgba(255,20,50,.12),transparent 30%),
+        linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.01));
+}
+
+.launcher-state{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.big-status{
+    width:48px;
+    height:48px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(66,245,155,.07);
+    border:1px solid rgba(66,245,155,.15);
+    color:var(--green);
+    font-size:18px;
+}
+
+.launcher-state h2{
+    font-size:16px;
+}
+
+.launcher-state p{
+    margin-top:4px;
+    color:#555;
+    font-size:7px;
+}
+
+.switch{
+    position:relative;
+    width:48px;
+    height:27px;
+    border:0;
+    border-radius:20px;
+    background:#242428;
+}
+
+.switch i{
+    position:absolute;
+    top:4px;
+    left:4px;
+    width:19px;
+    height:19px;
+    border-radius:50%;
+    background:#777;
+    transition:.2s;
+}
+
+.switch.on{
+    background:rgba(255,20,50,.55);
+}
+
+.switch.on i{
+    left:25px;
+    background:#fff;
+}
+
+.settings-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:15px;
+}
+
+.setting-row{
+    padding:15px;
+    border:1px solid rgba(255,255,255,.055);
+    border-radius:12px;
+    background:#09090b;
+}
+
+.setting-row label{
+    display:block;
+    color:#4d4d54;
+    font-size:7px;
+    font-weight:900;
     letter-spacing:1px;
+    margin-bottom:9px;
 }
 
-/* Desktop */
+.setting-value{
+    color:#ddd;
+    font-size:10px;
+}
 
-@media(min-width:700px){
+/* =========================
+   EMPTY
+========================= */
 
-    .container{
-        padding-top:55px;
+.empty{
+    padding:35px 15px;
+    text-align:center;
+    color:#414149;
+    font-size:8px;
+}
+
+.empty-icon{
+    font-size:25px;
+    opacity:.4;
+    margin-bottom:9px;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+    position:fixed;
+    z-index:100;
+    right:22px;
+    bottom:22px;
+    max-width:310px;
+    padding:13px 16px;
+    border:1px solid rgba(66,245,155,.18);
+    border-radius:11px;
+    background:rgba(12,12,15,.94);
+    box-shadow:0 15px 40px rgba(0,0,0,.45);
+    color:#ddd;
+    font-size:8px;
+    transform:translateY(20px);
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:900px){
+
+    .sidebar{
+        transform:translateX(-100%);
+        transition:.25s;
+        box-shadow:20px 0 50px rgba(0,0,0,.5);
     }
 
-    .hero h2{
-        font-size:38px;
+    .sidebar.open{
+        transform:translateX(0);
+    }
+
+    .main{
+        width:100%;
+        margin-left:0;
+        padding:18px 15px 85px;
+    }
+
+    .mobile-menu{
+        display:flex;
+        width:36px;
+        height:36px;
+        align-items:center;
+        justify-content:center;
+        border:1px solid var(--border);
+        border-radius:10px;
+        background:#0c0c0f;
+        color:#aaa;
+    }
+
+    .topbar{
+        margin-bottom:20px;
+    }
+
+    .page-title{
+        display:flex;
+        align-items:center;
+        gap:10px;
+    }
+
+    .page-title h1{
+        font-size:19px;
+    }
+
+    .api-status{
+        display:none;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .two-col{
+        grid-template-columns:1fr;
     }
 }
 
+@media(max-width:560px){
+
+    .stats{
+        gap:8px;
+    }
+
+    .stat{
+        min-height:105px;
+        padding:14px;
+    }
+
+    .stat-value{
+        font-size:24px;
+    }
+
+    .card{
+        padding:15px;
+        border-radius:15px;
+    }
+
+    .settings-grid{
+        grid-template-columns:1fr;
+    }
+
+    .toolbar{
+        flex-wrap:wrap;
+    }
+
+    .search{
+        flex-basis:100%;
+    }
+
+    .filter{
+        flex:1;
+    }
+
+    .launcher-hero{
+        padding:17px;
+    }
+
+    .topic-card{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .topic-actions{
+        width:100%;
+    }
+
+    .topic-actions button{
+        flex:1;
+    }
+}
 </style>
 </head>
 
@@ -470,255 +1070,623 @@ input::placeholder{
 
 <div class="bg-grid"></div>
 
-<div class="container">
+<div class="app">
 
-    <!-- HEADER -->
+<!-- =========================
+     SIDEBAR
+========================= -->
 
-    <header class="header">
+<aside class="sidebar" id="sidebar">
 
-        <div class="brand">
+    <div class="logo-area">
+        <div class="logo">SHZ</div>
 
-            <div class="logo">
-                SHZ
-            </div>
-
-            <div class="brand-text">
-                <h1>SHZ SYSTEM</h1>
-                <p>LICENSE MANAGER</p>
-            </div>
-
+        <div>
+            <div class="logo-name">SHZ SYSTEM</div>
+            <div class="logo-sub">CONTROL CENTER</div>
         </div>
+    </div>
 
-        <div class="admin-status">
-            <div class="dot"></div>
-            ADMIN
-        </div>
+    <div class="nav-label">MAIN MENU</div>
 
-    </header>
+    <nav class="nav">
 
-
-    <!-- HERO -->
-
-    <section class="hero">
-
-        <h2>LICENSE CONTROL</h2>
-
-        <p>
-            SECURE CLIENT MANAGEMENT SYSTEM
-        </p>
-
-    </section>
-
-
-    <!-- ADMIN CARD -->
-
-    <section class="card">
-
-        <div class="card-title">
-            <span>🔐</span>
-            ADMIN AUTHENTICATION
-        </div>
-
-        <div class="input-wrap">
-
-            <input
-                id="adminPassword"
-                type="password"
-                placeholder="Enter admin password"
-                autocomplete="off"
-            >
-
-        </div>
-
-    </section>
-
-
-    <!-- DURATION -->
-
-    <section class="card">
-
-        <div class="card-title">
-            <span>⏱</span>
-            LICENSE DURATION
-        </div>
-
-        <div class="duration-grid">
-
-            <button
-                class="duration"
-                data-duration="1day"
-                onclick="selectDuration(this)"
-            >
-                <strong>1 DAY</strong>
-                <small>24 HOURS</small>
-            </button>
-
-            <button
-                class="duration"
-                data-duration="1week"
-                onclick="selectDuration(this)"
-            >
-                <strong>1 WEEK</strong>
-                <small>7 DAYS</small>
-            </button>
-
-            <button
-                class="duration"
-                data-duration="1month"
-                onclick="selectDuration(this)"
-            >
-                <strong>1 MONTH</strong>
-                <small>30 DAYS</small>
-            </button>
-
-            <button
-                class="duration"
-                data-duration="1year"
-                onclick="selectDuration(this)"
-            >
-                <strong>1 YEAR</strong>
-                <small>365 DAYS</small>
-            </button>
-
-            <button
-                class="duration"
-                data-duration="unlimited"
-                onclick="selectDuration(this)"
-                style="grid-column:1 / -1"
-            >
-                <strong>♾ UNLIMITED</strong>
-                <small>NO EXPIRATION</small>
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- CREATE -->
-
-    <section class="card">
-
-        <button
-            class="create-btn"
-            id="createButton"
-            onclick="createLicense()"
-        >
-            CREATE NEW LICENSE
+        <button class="active" onclick="showPage('dashboard',this)">
+            <span>◈</span> DASHBOARD
         </button>
 
-        <div
-            class="loading"
-            id="loading"
-        >
-            <div class="spinner"></div>
-            GENERATING SECURE LICENSE...
+        <button onclick="showPage('licenses',this)">
+            <span>🔑</span> LICENSE MANAGER
+        </button>
+
+        <button onclick="showPage('topics',this)">
+            <span>⌁</span> TOPIC MANAGER
+        </button>
+
+        <button onclick="showPage('launcher',this)">
+            <span>▣</span> LAUNCHER
+        </button>
+
+        <button onclick="showPage('users',this)">
+            <span>♙</span> USERS
+        </button>
+
+        <button onclick="showPage('settings',this)">
+            <span>⚙</span> SETTINGS
+        </button>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+        <div class="admin-mini">
+
+            <div class="admin-avatar">A</div>
+
+            <div>
+                <div class="admin-name">SYSTEM ADMIN</div>
+                <div class="admin-online">
+                    <i></i> SESSION ACTIVE
+                </div>
+            </div>
+
         </div>
 
-        <div
-            class="error"
-            id="errorBox"
-        ></div>
+    </div>
+
+</aside>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+    <div class="topbar">
+
+        <div class="page-title">
+
+            <button
+                class="mobile-menu"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+            <div>
+                <h1 id="pageHeading">Dashboard</h1>
+                <p id="pageDescription">
+                    SHZ LICENSE CONTROL CENTER
+                </p>
+            </div>
+
+        </div>
+
+        <div class="top-actions">
+
+            <div class="api-status">
+                <div class="api-dot"></div>
+                API ONLINE
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         DASHBOARD
+    ========================= -->
+
+    <section class="page active" id="dashboard">
+
+        <div class="stats">
+
+            <div class="stat">
+                <div class="stat-label">TOTAL LICENSES</div>
+                <div class="stat-value" id="totalLicenses">0</div>
+                <div class="stat-note">GENERATED FROM THIS PANEL</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-label">ACTIVE</div>
+                <div class="stat-value" id="activeLicenses">0</div>
+                <div class="stat-note green">CURRENTLY ACTIVE</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-label">EXPIRED</div>
+                <div class="stat-value" id="expiredLicenses">0</div>
+                <div class="stat-note">NO LONGER VALID</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-label">TOPICS</div>
+                <div class="stat-value" id="totalTopics">0</div>
+                <div class="stat-note">CLIENT TOPICS</div>
+            </div>
+
+        </div>
+
+
+        <div class="two-col">
+
+            <div class="card">
+
+                <div class="card-head">
+
+                    <div class="card-title">
+                        <div class="card-title-icon">◷</div>
+                        RECENT LICENSES
+                    </div>
+
+                    <button
+                        class="view-all"
+                        onclick="showPageByName('licenses')"
+                    >
+                        VIEW ALL →
+                    </button>
+
+                </div>
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>KEY</th>
+                                <th>TOPIC</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="recentTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-head">
+
+                    <div class="card-title">
+                        <div class="card-title-icon">⚡</div>
+                        QUICK ACTIONS
+                    </div>
+
+                </div>
+
+                <div class="quick-grid">
+
+                    <button
+                        class="quick"
+                        onclick="showPageByName('licenses')"
+                    >
+                        <strong>+ NEW LICENSE</strong>
+                        <small>CREATE CLIENT ACCESS</small>
+                    </button>
+
+                    <button
+                        class="quick"
+                        onclick="showPageByName('topics')"
+                    >
+                        <strong>TOPICS</strong>
+                        <small>VIEW CLIENT TOPICS</small>
+                    </button>
+
+                    <button
+                        class="quick"
+                        onclick="showPageByName('launcher')"
+                    >
+                        <strong>LAUNCHER</strong>
+                        <small>CONTROL LAUNCHER</small>
+                    </button>
+
+                    <button
+                        class="quick"
+                        onclick="showPageByName('settings')"
+                    >
+                        <strong>SETTINGS</strong>
+                        <small>SYSTEM CONFIGURATION</small>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </section>
 
 
-    <!-- RESULT -->
+    <!-- =========================
+         LICENSES
+    ========================= -->
 
-    <section
-        class="card success-box result"
-        id="resultBox"
-    >
+    <section class="page" id="licenses">
 
-        <div class="success-header">
+        <div class="two-col">
 
-            <div class="success-title">
-                ✓ LICENSE CREATED
+            <div>
+
+                <div class="card">
+
+                    <div class="card-head">
+
+                        <div class="card-title">
+                            <div class="card-title-icon">+</div>
+                            CREATE LICENSE
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="form-label">
+                            ADMIN PASSWORD
+                        </div>
+
+                        <input
+                            class="input"
+                            id="adminPassword"
+                            type="password"
+                            placeholder="Enter admin password"
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="form-label">
+                            LICENSE DURATION
+                        </div>
+
+                        <div class="duration-grid">
+
+                            <button
+                                class="duration"
+                                data-duration="1day"
+                                onclick="selectDuration(this)"
+                            >
+                                <strong>1 DAY</strong>
+                                <small>24 HOURS</small>
+                            </button>
+
+                            <button
+                                class="duration"
+                                data-duration="1week"
+                                onclick="selectDuration(this)"
+                            >
+                                <strong>1 WEEK</strong>
+                                <small>7 DAYS</small>
+                            </button>
+
+                            <button
+                                class="duration"
+                                data-duration="1month"
+                                onclick="selectDuration(this)"
+                            >
+                                <strong>1 MONTH</strong>
+                                <small>30 DAYS</small>
+                            </button>
+
+                            <button
+                                class="duration"
+                                data-duration="1year"
+                                onclick="selectDuration(this)"
+                            >
+                                <strong>1 YEAR</strong>
+                                <small>365 DAYS</small>
+                            </button>
+
+                            <button
+                                class="duration"
+                                data-duration="unlimited"
+                                onclick="selectDuration(this)"
+                                style="grid-column:1/-1"
+                            >
+                                <strong>♾ UNLIMITED</strong>
+                                <small>NO EXPIRATION</small>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <button
+                        class="create-btn"
+                        id="createButton"
+                        onclick="createLicense()"
+                    >
+                        CREATE NEW LICENSE
+                    </button>
+
+                    <div
+                        class="loading"
+                        id="loading"
+                    >
+                        <div class="spinner"></div>
+                        GENERATING SECURE LICENSE...
+                    </div>
+
+                    <div
+                        class="error"
+                        id="errorBox"
+                    ></div>
+
+                </div>
+
             </div>
 
-            <div class="status-pill">
-                ACTIVE
+
+            <div>
+
+                <div class="card">
+
+                    <div class="card-head">
+
+                        <div class="card-title">
+                            <div class="card-title-icon">✓</div>
+                            LAST CREATED
+                        </div>
+
+                    </div>
+
+                    <div id="lastCreated">
+
+                        <div class="empty">
+                            <div class="empty-icon">🔑</div>
+                            No license created yet.
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
 
 
-        <div class="data-row">
+        <div class="card" style="margin-top:15px">
 
-            <div class="data-label">
-                LICENSE KEY
+            <div class="card-head">
+
+                <div class="card-title">
+                    <div class="card-title-icon">▤</div>
+                    LICENSE DATABASE
+                </div>
+
             </div>
 
-            <div class="data-value">
+            <div class="toolbar">
 
-                <code id="licenseKey">
-                    —
-                </code>
+                <div class="search">
+
+                    <span class="search-icon">⌕</span>
+
+                    <input
+                        class="input"
+                        id="licenseSearch"
+                        placeholder="Search license or topic..."
+                        oninput="renderLicenses()"
+                    >
+
+                </div>
+
+                <select
+                    class="filter"
+                    id="licenseFilter"
+                    onchange="renderLicenses()"
+                >
+                    <option value="all">ALL</option>
+                    <option value="active">ACTIVE</option>
+                    <option value="expired">EXPIRED</option>
+                </select>
+
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>LICENSE KEY</th>
+                            <th>TOPIC</th>
+                            <th>DURATION</th>
+                            <th>EXPIRES</th>
+                            <th>STATUS</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="licenseTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         TOPICS
+    ========================= -->
+
+    <section class="page" id="topics">
+
+        <div class="card">
+
+            <div class="card-head">
+
+                <div class="card-title">
+                    <div class="card-title-icon">⌁</div>
+                    TOPIC MANAGER
+                </div>
 
                 <button
-                    class="copy"
-                    onclick="copyValue('licenseKey',this)"
+                    class="view-all"
+                    onclick="refreshTopics()"
                 >
-                    COPY
+                    REFRESH
+                </button>
+
+            </div>
+
+            <div class="toolbar">
+
+                <div class="search">
+
+                    <span class="search-icon">⌕</span>
+
+                    <input
+                        class="input"
+                        id="topicSearch"
+                        placeholder="Search topic..."
+                        oninput="renderTopics()"
+                    >
+
+                </div>
+
+            </div>
+
+            <div id="topicList"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         LAUNCHER
+    ========================= -->
+
+    <section class="page" id="launcher">
+
+        <div class="launcher-hero">
+
+            <div class="launcher-state">
+
+                <div class="big-status">▣</div>
+
+                <div>
+                    <h2>SHZ LAUNCHER</h2>
+                    <p>LAUNCHER CONTROL & SYSTEM STATUS</p>
+                </div>
+
+            </div>
+
+            <button
+                class="switch on"
+                id="launcherSwitch"
+                onclick="toggleLauncher()"
+            >
+                <i></i>
+            </button>
+
+        </div>
+
+
+        <div class="settings-grid">
+
+            <div class="setting-row">
+                <label>LAUNCHER STATUS</label>
+                <div class="setting-value" id="launcherStatus">
+                    ONLINE
+                </div>
+            </div>
+
+            <div class="setting-row">
+                <label>CURRENT VERSION</label>
+                <div class="setting-value">v1.0.0</div>
+            </div>
+
+            <div class="setting-row">
+                <label>API CONNECTION</label>
+                <div class="setting-value">CONNECTED</div>
+            </div>
+
+            <div class="setting-row">
+                <label>SYSTEM MODE</label>
+                <div class="setting-value">PRODUCTION</div>
+            </div>
+
+        </div>
+
+
+        <div class="card" style="margin-top:15px">
+
+            <div class="card-head">
+
+                <div class="card-title">
+                    <div class="card-title-icon">⚠</div>
+                    MAINTENANCE
+                </div>
+
+            </div>
+
+            <div class="setting-row">
+
+                <label>MAINTENANCE MESSAGE</label>
+
+                <input
+                    class="input"
+                    id="maintenanceMessage"
+                    value="System is currently operational."
+                >
+
+                <button
+                    class="create-btn"
+                    style="margin-top:10px"
+                    onclick="saveMaintenance()"
+                >
+                    SAVE LAUNCHER MESSAGE
                 </button>
 
             </div>
 
         </div>
 
+    </section>
 
-        <div class="data-row">
 
-            <div class="data-label">
-                CLIENT TOPIC
-            </div>
+    <!-- =========================
+         USERS
+    ========================= -->
 
-            <div class="data-value">
+    <section class="page" id="users">
 
-                <code id="topic">
-                    —
-                </code>
+        <div class="card">
 
-                <button
-                    class="copy"
-                    onclick="copyValue('topic',this)"
-                >
-                    COPY
-                </button>
+            <div class="card-head">
+
+                <div class="card-title">
+                    <div class="card-title-icon">♙</div>
+                    USER MANAGEMENT
+                </div>
 
             </div>
 
-        </div>
+            <div class="empty">
 
+                <div class="empty-icon">♙</div>
 
-        <div class="data-row">
+                <div style="color:#777;margin-bottom:7px">
+                    USER DATABASE READY
+                </div>
 
-            <div class="data-label">
-                DURATION
-            </div>
-
-            <div class="data-value">
-
-                <code id="durationResult">
-                    —
-                </code>
-
-            </div>
-
-        </div>
-
-
-        <div class="data-row">
-
-            <div class="data-label">
-                EXPIRES
-            </div>
-
-            <div class="data-value">
-
-                <code id="expires">
-                    —
-                </code>
+                User connection data will appear here
+                after the launcher backend is connected.
 
             </div>
 
@@ -727,27 +1695,92 @@ input::placeholder{
     </section>
 
 
-    <!-- FOOTER -->
+    <!-- =========================
+         SETTINGS
+    ========================= -->
 
-    <footer class="footer">
+    <section class="page" id="settings">
 
-        <div class="footer-main">
-            SHZ SYSTEM • SECURE CLIENT
+        <div class="two-col">
+
+            <div class="card">
+
+                <div class="card-head">
+
+                    <div class="card-title">
+                        <div class="card-title-icon">⚙</div>
+                        SYSTEM SETTINGS
+                    </div>
+
+                </div>
+
+                <div class="setting-row">
+                    <label>SYSTEM NAME</label>
+                    <div class="setting-value">SHZ SYSTEM</div>
+                </div>
+
+                <div class="setting-row" style="margin-top:8px">
+                    <label>PANEL VERSION</label>
+                    <div class="setting-value">CONTROL CENTER 1.0</div>
+                </div>
+
+                <div class="setting-row" style="margin-top:8px">
+                    <label>THEME</label>
+                    <div class="setting-value">DARK / RED</div>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-head">
+
+                    <div class="card-title">
+                        <div class="card-title-icon">●</div>
+                        CONNECTION
+                    </div>
+
+                </div>
+
+                <div class="setting-row">
+                    <label>SUPABASE FUNCTION</label>
+                    <div
+                        class="setting-value"
+                        style="font-family:monospace;font-size:7px;word-break:break-all"
+                    >
+                        create-license
+                    </div>
+                </div>
+
+                <div class="setting-row" style="margin-top:8px">
+                    <label>STATUS</label>
+                    <div
+                        class="setting-value"
+                        style="color:var(--green)"
+                    >
+                        ONLINE
+                    </div>
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="footer-sub">
-            LICENSE MANAGEMENT PANEL
-        </div>
+    </section>
 
-    </footer>
+</main>
 
 </div>
+
+
+<div class="toast" id="toast"></div>
 
 
 <script>
 
 /* =========================================
-   SHZ LICENSE MANAGER
+   SHZ CONTROL CENTER
    ========================================= */
 
 const FUNCTION_URL =
@@ -756,8 +1789,137 @@ const FUNCTION_URL =
 
 let selectedDuration = null;
 
+let licenses =
+    JSON.parse(
+        localStorage.getItem("shz_licenses") || "[]"
+    );
 
-/* Select duration */
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+const pageInfo = {
+
+    dashboard:{
+        title:"Dashboard",
+        desc:"SHZ LICENSE CONTROL CENTER"
+    },
+
+    licenses:{
+        title:"License Manager",
+        desc:"CREATE AND MANAGE CLIENT LICENSES"
+    },
+
+    topics:{
+        title:"Topic Manager",
+        desc:"CLIENT TOPIC MANAGEMENT"
+    },
+
+    launcher:{
+        title:"Launcher",
+        desc:"LAUNCHER CONTROL & SYSTEM STATUS"
+    },
+
+    users:{
+        title:"Users",
+        desc:"CLIENT AND CONNECTION MANAGEMENT"
+    },
+
+    settings:{
+        title:"Settings",
+        desc:"SYSTEM CONFIGURATION"
+    }
+
+};
+
+
+function showPage(name,button){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(page=>{
+            page.classList.remove("active");
+        });
+
+    const page =
+        document.getElementById(name);
+
+    if(page)
+        page.classList.add("active");
+
+
+    document
+        .querySelectorAll(".nav button")
+        .forEach(btn=>{
+            btn.classList.remove("active");
+        });
+
+
+    if(button)
+        button.classList.add("active");
+
+
+    document.getElementById("pageHeading")
+        .textContent =
+        pageInfo[name].title;
+
+
+    document.getElementById("pageDescription")
+        .textContent =
+        pageInfo[name].desc;
+
+
+    document
+        .getElementById("sidebar")
+        .classList.remove("open");
+
+
+    updateAll();
+}
+
+
+function showPageByName(name){
+
+    const buttons =
+        document.querySelectorAll(".nav button");
+
+    let target = null;
+
+    buttons.forEach(btn=>{
+
+        const text =
+            btn.textContent.toLowerCase();
+
+        if(
+            (name==="dashboard" && text.includes("dashboard")) ||
+            (name==="licenses" && text.includes("license")) ||
+            (name==="topics" && text.includes("topic")) ||
+            (name==="launcher" && text.includes("launcher")) ||
+            (name==="users" && text.includes("users")) ||
+            (name==="settings" && text.includes("settings"))
+        ){
+            target = btn;
+        }
+
+    });
+
+    showPage(name,target);
+}
+
+
+function toggleSidebar(){
+
+    document
+        .getElementById("sidebar")
+        .classList.toggle("open");
+
+}
+
+
+/* =========================================
+   DURATION
+========================================= */
 
 function selectDuration(button){
 
@@ -775,7 +1937,9 @@ function selectDuration(button){
 }
 
 
-/* Create license */
+/* =========================================
+   CREATE LICENSE
+========================================= */
 
 async function createLicense(){
 
@@ -794,12 +1958,8 @@ async function createLicense(){
     const error =
         document.getElementById("errorBox");
 
-    const result =
-        document.getElementById("resultBox");
-
 
     error.style.display="none";
-    result.style.display="none";
 
 
     if(!password){
@@ -823,6 +1983,7 @@ async function createLicense(){
 
 
     button.disabled=true;
+
     loading.style.display="flex";
 
 
@@ -856,57 +2017,73 @@ async function createLicense(){
             await response.json();
 
 
-        if(!response.ok ||
-           !data.success){
+        if(
+            !response.ok ||
+            !data.success
+        ){
 
             let message =
                 data.error ||
                 "License creation failed.";
 
             if(message==="UNAUTHORIZED"){
+
                 message =
                     "Admin password is incorrect.";
+
             }
 
             throw new Error(message);
+
         }
 
 
-        document
-            .getElementById("licenseKey")
-            .textContent =
-                data.license_key || "—";
+        const item = {
+
+            license_key:
+                data.license_key || "—",
+
+            topic:
+                data.topic || "—",
+
+            duration:
+                data.duration || selectedDuration,
+
+            expires_at:
+                data.expires_at || null,
+
+            created_at:
+                new Date().toISOString()
+
+        };
+
+
+        licenses.unshift(item);
+
+
+        localStorage.setItem(
+            "shz_licenses",
+            JSON.stringify(licenses)
+        );
+
+
+        showLastCreated(item);
+
+        showToast(
+            "License created successfully."
+        );
+
+
+        renderLicenses();
+
+        renderTopics();
+
+        updateStats();
 
 
         document
-            .getElementById("topic")
-            .textContent =
-                data.topic || "—";
-
-
-        document
-            .getElementById("durationResult")
-            .textContent =
-                formatDuration(
-                    data.duration
-                );
-
-
-        document
-            .getElementById("expires")
-            .textContent =
-                data.expires_at
-                ? formatDate(data.expires_at)
-                : "NEVER";
-
-
-        result.style.display="block";
-
-
-        result.scrollIntoView({
-            behavior:"smooth",
-            block:"center"
-        });
+            .getElementById("adminPassword")
+            .value="";
 
 
     }catch(err){
@@ -919,6 +2096,7 @@ async function createLicense(){
     }finally{
 
         button.disabled=false;
+
         loading.style.display="none";
 
     }
@@ -926,100 +2104,480 @@ async function createLicense(){
 }
 
 
-/* Error */
+/* =========================================
+   LAST CREATED
+========================================= */
 
-function showError(message){
+function showLastCreated(item){
 
-    const box =
-        document.getElementById("errorBox");
+    document
+        .getElementById("lastCreated")
+        .innerHTML = `
 
-    box.textContent =
-        "⚠ " + message;
+        <div class="topic-card">
 
-    box.style.display="block";
+            <div class="topic-info">
+
+                <div class="topic-name">
+                    ${escapeHtml(item.license_key)}
+                </div>
+
+                <div class="topic-meta">
+                    ${escapeHtml(item.topic)}
+                </div>
+
+            </div>
+
+            <button
+                class="small-btn"
+                onclick="copyText('${escapeAttr(item.license_key)}')"
+            >
+                COPY
+            </button>
+
+        </div>
+
+        <div class="setting-row">
+
+            <label>DURATION</label>
+
+            <div class="setting-value">
+                ${formatDuration(item.duration)}
+            </div>
+
+        </div>
+
+        <div class="setting-row" style="margin-top:8px">
+
+            <label>EXPIRES</label>
+
+            <div class="setting-value">
+                ${
+                    item.expires_at
+                    ? formatDate(item.expires_at)
+                    : "NEVER"
+                }
+            </div>
+
+        </div>
+
+    `;
+
 }
 
 
-/* Duration text */
+/* =========================================
+   LICENSE TABLE
+========================================= */
 
-function formatDuration(value){
+function renderLicenses(){
 
-    const names={
-        "1day":"1 DAY",
-        "1week":"1 WEEK",
-        "1month":"1 MONTH",
-        "1year":"1 YEAR",
-        "unlimited":"UNLIMITED"
-    };
+    const tbody =
+        document.getElementById("licenseTable");
 
-    return names[value] || value;
-}
-
-
-/* Date */
-
-function formatDate(value){
-
-    const date =
-        new Date(value);
-
-    return date.toLocaleString(
-        undefined,
-        {
-            year:"numeric",
-            month:"short",
-            day:"numeric",
-            hour:"2-digit",
-            minute:"2-digit"
-        }
-    );
-}
-
-
-/* Copy */
-
-async function copyValue(
-    elementId,
-    button
-){
-
-    const text =
-        document
-        .getElementById(elementId)
-        .textContent
+    const search =
+        (
+            document
+            .getElementById("licenseSearch")
+            ?.value || ""
+        )
+        .toLowerCase()
         .trim();
 
+    const filter =
+        document
+        .getElementById("licenseFilter")
+        ?.value || "all";
 
-    if(!text || text==="—")
+
+    let list =
+        licenses.filter(item=>{
+
+            const matchesSearch =
+                !search ||
+                item.license_key
+                    .toLowerCase()
+                    .includes(search) ||
+                item.topic
+                    .toLowerCase()
+                    .includes(search);
+
+
+            const status =
+                getStatus(item);
+
+
+            const matchesFilter =
+                filter==="all" ||
+                filter===status;
+
+
+            return matchesSearch &&
+                   matchesFilter;
+
+        });
+
+
+    if(!list.length){
+
+        tbody.innerHTML = `
+
+            <tr>
+                <td colspan="6">
+                    <div class="empty">
+                        No licenses found.
+                    </div>
+                </td>
+            </tr>
+
+        `;
+
         return;
-
-
-    try{
-
-        await navigator
-            .clipboard
-            .writeText(text);
-
-        const old =
-            button.textContent;
-
-        button.textContent="COPIED";
-
-        setTimeout(()=>{
-            button.textContent=old;
-        },1200);
-
-    }catch(e){
-
-        alert(
-            "Copy failed. Please copy manually."
-        );
 
     }
 
+
+    tbody.innerHTML =
+        list.map((item,index)=>{
+
+            const status =
+                getStatus(item);
+
+            return `
+
+            <tr>
+
+                <td class="key-cell">
+                    ${escapeHtml(item.license_key)}
+                </td>
+
+                <td class="topic-cell">
+                    ${escapeHtml(item.topic)}
+                </td>
+
+                <td>
+                    ${formatDuration(item.duration)}
+                </td>
+
+                <td>
+                    ${
+                        item.expires_at
+                        ? formatDate(item.expires_at)
+                        : "NEVER"
+                    }
+                </td>
+
+                <td>
+                    <span class="badge ${status}">
+                        ${status.toUpperCase()}
+                    </span>
+                </td>
+
+                <td>
+
+                    <button
+                        class="small-btn"
+                        onclick="copyText('${escapeAttr(item.license_key)}')"
+                    >
+                        COPY
+                    </button>
+
+                    <button
+                        class="small-btn danger"
+                        onclick="removeLicense(${index})"
+                    >
+                        DELETE
+                    </button>
+
+                </td>
+
+            </tr>
+
+            `;
+
+        })
+        .join("");
+
 }
 
-</script>
 
-</body>
-</html>
+/* =========================================
+   REMOVE LOCAL RECORD
+========================================= */
+
+function removeLicense(index){
+
+    if(!confirm(
+        "Remove this license from this panel?"
+    ))
+        return;
+
+
+    licenses.splice(index,1);
+
+    localStorage.setItem(
+        "shz_licenses",
+        JSON.stringify(licenses)
+    );
+
+
+    updateAll();
+
+    showToast(
+        "License removed from local panel."
+    );
+
+}
+
+
+/* =========================================
+   TOPICS
+========================================= */
+
+function renderTopics(){
+
+    const box =
+        document.getElementById("topicList");
+
+    const search =
+        (
+            document
+            .getElementById("topicSearch")
+            ?.value || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    const topics =
+        licenses.filter(item=>{
+
+            return (
+                !search ||
+                item.topic
+                    .toLowerCase()
+                    .includes(search)
+            );
+
+        });
+
+
+    if(!topics.length){
+
+        box.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">⌁</div>
+
+                No topics found.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML =
+        topics.map(item=>`
+
+        <div class="topic-card">
+
+            <div class="topic-info">
+
+                <div class="topic-name">
+                    ${escapeHtml(item.topic)}
+                </div>
+
+                <div class="topic-meta">
+
+                    LICENSE:
+                    ${escapeHtml(item.license_key)}
+
+                    ·
+
+                    ${formatDuration(item.duration)}
+
+                </div>
+
+            </div>
+
+            <div class="topic-actions">
+
+                <button
+                    class="small-btn"
+                    onclick="copyText('${escapeAttr(item.topic)}')"
+                >
+                    COPY
+                </button>
+
+            </div>
+
+        </div>
+
+        `)
+        .join("");
+
+}
+
+
+function refreshTopics(){
+
+    renderTopics();
+
+    showToast(
+        "Topics refreshed."
+    );
+
+}
+
+
+/* =========================================
+   STATS
+========================================= */
+
+function updateStats(){
+
+    const total =
+        licenses.length;
+
+    const active =
+        licenses.filter(
+            item=>getStatus(item)==="active"
+        ).length;
+
+    const expired =
+        licenses.filter(
+            item=>getStatus(item)==="expired"
+        ).length;
+
+    const topics =
+        licenses.filter(
+            item=>item.topic
+        ).length;
+
+
+    document.getElementById(
+        "totalLicenses"
+    ).textContent = total;
+
+
+    document.getElementById(
+        "activeLicenses"
+    ).textContent = active;
+
+
+    document.getElementById(
+        "expiredLicenses"
+    ).textContent = expired;
+
+
+    document.getElementById(
+        "totalTopics"
+    ).textContent = topics;
+
+
+    const recent =
+        licenses.slice(0,5);
+
+    const tbody =
+        document.getElementById(
+            "recentTable"
+        );
+
+
+    if(!recent.length){
+
+        tbody.innerHTML = `
+
+            <tr>
+                <td colspan="3">
+                    <div class="empty">
+                        No licenses created yet.
+                    </div>
+                </td>
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        recent.map(item=>`
+
+        <tr>
+
+            <td class="key-cell">
+                ${escapeHtml(item.license_key)}
+            </td>
+
+            <td class="topic-cell">
+                ${escapeHtml(item.topic)}
+            </td>
+
+            <td>
+
+                <span class="badge ${getStatus(item)}">
+                    ${getStatus(item).toUpperCase()}
+                </span>
+
+            </td>
+
+        </tr>
+
+        `)
+        .join("");
+
+}
+
+
+/* =========================================
+   STATUS
+========================================= */
+
+function getStatus(item){
+
+    if(!item.expires_at)
+        return "active";
+
+
+    const expiry =
+        new Date(item.expires_at)
+        .getTime();
+
+
+    return expiry > Date.now()
+        ? "active"
+        : "expired";
+
+}
+
+
+/* =========================================
+   LAUNCHER
+========================================= */
+
+function toggleLauncher(){
+
+    const button =
+        document.getElementById(
+            "launcherSwitch"
+        );
+
+    const status =
+        document.getElementById(
+            "launcherStatus"
+        );
+
+
+    button.classList.toggle("on");
+
+
+    const online =
+ 
