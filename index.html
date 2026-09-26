@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>SHZ License Manager</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --red:#ff1e3c;
+    --red2:#ff4960;
+    --bg:#050505;
+    --card:#0c0c0f;
+    --border:rgba(255,255,255,.08);
+    --text:#f5f5f5;
+    --muted:#777;
+}
+
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 50% -10%,rgba(255,20,55,.16),transparent 35%),
+        radial-gradient(circle at 0% 100%,rgba(255,20,55,.07),transparent 30%),
+        #050505;
+    color:var(--text);
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+    overflow-x:hidden;
+}
+
+/* Background */
+
+.bg-grid{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.035;
+    background-image:
+        linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);
+    background-size:35px 35px;
+}
+
+/* Main */
+
+.container{
+    width:min(100%,520px);
+    margin:auto;
+    padding:25px 17px 45px;
+    position:relative;
+}
+
+/* Header */
+
+.header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:30px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:48px;
+    height:48px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    font-weight:1000;
+    letter-spacing:2px;
+    color:white;
+    background:
+        linear-gradient(145deg,#171717,#080808);
+    border:1px solid rgba(255,40,65,.45);
+    box-shadow:
+        0 0 25px rgba(255,20,50,.14),
+        inset 0 0 20px rgba(255,255,255,.02);
+}
+
+.brand-text h1{
+    font-size:18px;
+    font-weight:950;
+    letter-spacing:3px;
+}
+
+.brand-text p{
+    font-size:9px;
+    color:var(--red);
+    font-weight:800;
+    letter-spacing:2px;
+    margin-top:4px;
+}
+
+.admin-status{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 11px;
+    border:1px solid var(--border);
+    border-radius:20px;
+    background:rgba(255,255,255,.025);
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:1px;
+    color:#777;
+}
+
+.dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#444;
+}
+
+/* Hero */
+
+.hero{
+    text-align:center;
+    margin:10px 0 28px;
+}
+
+.hero h2{
+    font-size:31px;
+    font-weight:1000;
+    letter-spacing:-1px;
+    background:linear-gradient(180deg,#fff,#888);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    margin-top:8px;
+    color:#666;
+    font-size:11px;
+    letter-spacing:1px;
+}
+
+/* Card */
+
+.card{
+    position:relative;
+    background:
+        linear-gradient(145deg,
+        rgba(255,255,255,.045),
+        rgba(255,255,255,.012));
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:15px;
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.35),
+        inset 0 1px rgba(255,255,255,.025);
+    backdrop-filter:blur(15px);
+}
+
+.card-title{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:2px;
+    color:#aaa;
+    margin-bottom:16px;
+}
+
+.card-title span{
+    width:23px;
+    height:23px;
+    border-radius:7px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,25,55,.1);
+    color:var(--red);
+}
+
+/* Input */
+
+.input-wrap{
+    position:relative;
+}
+
+input{
+    width:100%;
+    height:52px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.08);
+    background:#080809;
+    color:white;
+    outline:none;
+    padding:0 15px;
+    font-size:14px;
+    transition:.25s;
+}
+
+input:focus{
+    border-color:rgba(255,30,60,.6);
+    box-shadow:0 0 0 3px rgba(255,30,60,.08);
+}
+
+input::placeholder{
+    color:#444;
+}
+
+/* Duration */
+
+.duration-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:9px;
+}
+
+.duration{
+    height:58px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.07);
+    background:#080809;
+    color:#777;
+    cursor:pointer;
+    transition:.2s;
+    text-align:left;
+    padding:0 14px;
+}
+
+.duration strong{
+    display:block;
+    font-size:12px;
+    color:#ddd;
+    margin-bottom:4px;
+}
+
+.duration small{
+    font-size:8px;
+    color:#555;
+    letter-spacing:.5px;
+}
+
+.duration:hover{
+    border-color:rgba(255,30,60,.35);
+}
+
+.duration.active{
+    background:
+        linear-gradient(135deg,
+        rgba(255,20,50,.18),
+        rgba(255,20,50,.04));
+    border-color:rgba(255,30,60,.7);
+    box-shadow:
+        0 0 20px rgba(255,20,50,.08);
+}
+
+.duration.active strong{
+    color:#fff;
+}
+
+.duration.active small{
+    color:var(--red2);
+}
+
+/* Create button */
+
+.create-btn{
+    width:100%;
+    height:57px;
+    border:none;
+    border-radius:14px;
+    margin-top:5px;
+    color:white;
+    background:
+        linear-gradient(135deg,#ff1738,#a8001d);
+    font-size:11px;
+    font-weight:1000;
+    letter-spacing:2px;
+    cursor:pointer;
+    box-shadow:
+        0 12px 30px rgba(255,20,50,.18);
+    transition:.2s;
+}
+
+.create-btn:active{
+    transform:scale(.98);
+}
+
+.create-btn:disabled{
+    opacity:.55;
+}
+
+/* Loading */
+
+.loading{
+    display:none;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    font-size:10px;
+    color:#aaa;
+    margin-top:15px;
+}
+
+.spinner{
+    width:14px;
+    height:14px;
+    border:2px solid #333;
+    border-top-color:var(--red);
+    border-radius:50%;
+    animation:spin .7s linear infinite;
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg)}
+}
+
+/* Result */
+
+.result{
+    display:none;
+}
+
+.success-box{
+    border:1px solid rgba(0,255,130,.18);
+    background:
+        linear-gradient(145deg,
+        rgba(0,255,130,.06),
+        rgba(255,255,255,.015));
+}
+
+.success-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+}
+
+.success-title{
+    color:#58ff9c;
+    font-size:11px;
+    font-weight:1000;
+    letter-spacing:1.5px;
+}
+
+.status-pill{
+    color:#58ff9c;
+    border:1px solid rgba(88,255,156,.25);
+    background:rgba(88,255,156,.06);
+    padding:6px 9px;
+    border-radius:20px;
+    font-size:8px;
+    font-weight:900;
+}
+
+.data-row{
+    margin-bottom:11px;
+}
+
+.data-label{
+    color:#555;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:1.5px;
+    margin-bottom:6px;
+}
+
+.data-value{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    min-height:43px;
+    padding:0 11px;
+    border-radius:10px;
+    background:#080809;
+    border:1px solid rgba(255,255,255,.06);
+}
+
+.data-value code{
+    flex:1;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    color:#ddd;
+    font-size:11px;
+    font-family:monospace;
+}
+
+.copy{
+    border:none;
+    background:rgba(255,255,255,.06);
+    color:#aaa;
+    border-radius:7px;
+    padding:7px 9px;
+    font-size:8px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.copy:active{
+    transform:scale(.95);
+}
+
+/* Error */
+
+.error{
+    display:none;
+    padding:13px;
+    border-radius:10px;
+    border:1px solid rgba(255,30,60,.25);
+    background:rgba(255,20,50,.06);
+    color:#ff6578;
+    font-size:10px;
+    line-height:1.5;
+}
+
+/* Footer */
+
+.footer{
+    text-align:center;
+    margin-top:28px;
+}
+
+.footer-main{
+    font-size:8px;
+    color:#444;
+    font-weight:800;
+    letter-spacing:2px;
+}
+
+.footer-sub{
+    margin-top:7px;
+    font-size:7px;
+    color:#292929;
+    letter-spacing:1px;
+}
+
+/* Desktop */
+
+@media(min-width:700px){
+
+    .container{
+        padding-top:55px;
+    }
+
+    .hero h2{
+        font-size:38px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg-grid"></div>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="brand">
+
+            <div class="logo">
+                SHZ
+            </div>
+
+            <div class="brand-text">
+                <h1>SHZ SYSTEM</h1>
+                <p>LICENSE MANAGER</p>
+            </div>
+
+        </div>
+
+        <div class="admin-status">
+            <div class="dot"></div>
+            ADMIN
+        </div>
+
+    </header>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <h2>LICENSE CONTROL</h2>
+
+        <p>
+            SECURE CLIENT MANAGEMENT SYSTEM
+        </p>
+
+    </section>
+
+
+    <!-- ADMIN CARD -->
+
+    <section class="card">
+
+        <div class="card-title">
+            <span>🔐</span>
+            ADMIN AUTHENTICATION
+        </div>
+
+        <div class="input-wrap">
+
+            <input
+                id="adminPassword"
+                type="password"
+                placeholder="Enter admin password"
+                autocomplete="off"
+            >
+
+        </div>
+
+    </section>
+
+
+    <!-- DURATION -->
+
+    <section class="card">
+
+        <div class="card-title">
+            <span>⏱</span>
+            LICENSE DURATION
+        </div>
+
+        <div class="duration-grid">
+
+            <button
+                class="duration"
+                data-duration="1day"
+                onclick="selectDuration(this)"
+            >
+                <strong>1 DAY</strong>
+                <small>24 HOURS</small>
+            </button>
+
+            <button
+                class="duration"
+                data-duration="1week"
+                onclick="selectDuration(this)"
+            >
+                <strong>1 WEEK</strong>
+                <small>7 DAYS</small>
+            </button>
+
+            <button
+                class="duration"
+                data-duration="1month"
+                onclick="selectDuration(this)"
+            >
+                <strong>1 MONTH</strong>
+                <small>30 DAYS</small>
+            </button>
+
+            <button
+                class="duration"
+                data-duration="1year"
+                onclick="selectDuration(this)"
+            >
+                <strong>1 YEAR</strong>
+                <small>365 DAYS</small>
+            </button>
+
+            <button
+                class="duration"
+                data-duration="unlimited"
+                onclick="selectDuration(this)"
+                style="grid-column:1 / -1"
+            >
+                <strong>♾ UNLIMITED</strong>
+                <small>NO EXPIRATION</small>
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- CREATE -->
+
+    <section class="card">
+
+        <button
+            class="create-btn"
+            id="createButton"
+            onclick="createLicense()"
+        >
+            CREATE NEW LICENSE
+        </button>
+
+        <div
+            class="loading"
+            id="loading"
+        >
+            <div class="spinner"></div>
+            GENERATING SECURE LICENSE...
+        </div>
+
+        <div
+            class="error"
+            id="errorBox"
+        ></div>
+
+    </section>
+
+
+    <!-- RESULT -->
+
+    <section
+        class="card success-box result"
+        id="resultBox"
+    >
+
+        <div class="success-header">
+
+            <div class="success-title">
+                ✓ LICENSE CREATED
+            </div>
+
+            <div class="status-pill">
+                ACTIVE
+            </div>
+
+        </div>
+
+
+        <div class="data-row">
+
+            <div class="data-label">
+                LICENSE KEY
+            </div>
+
+            <div class="data-value">
+
+                <code id="licenseKey">
+                    —
+                </code>
+
+                <button
+                    class="copy"
+                    onclick="copyValue('licenseKey',this)"
+                >
+                    COPY
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="data-row">
+
+            <div class="data-label">
+                CLIENT TOPIC
+            </div>
+
+            <div class="data-value">
+
+                <code id="topic">
+                    —
+                </code>
+
+                <button
+                    class="copy"
+                    onclick="copyValue('topic',this)"
+                >
+                    COPY
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="data-row">
+
+            <div class="data-label">
+                DURATION
+            </div>
+
+            <div class="data-value">
+
+                <code id="durationResult">
+                    —
+                </code>
+
+            </div>
+
+        </div>
+
+
+        <div class="data-row">
+
+            <div class="data-label">
+                EXPIRES
+            </div>
+
+            <div class="data-value">
+
+                <code id="expires">
+                    —
+                </code>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="footer-main">
+            SHZ SYSTEM • SECURE CLIENT
+        </div>
+
+        <div class="footer-sub">
+            LICENSE MANAGEMENT PANEL
+        </div>
+
+    </footer>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   SHZ LICENSE MANAGER
+   ========================================= */
+
+const FUNCTION_URL =
+"https://glkgppmuwaaemvodebgc.supabase.co/functions/v1/create-license";
+
+
+let selectedDuration = null;
+
+
+/* Select duration */
+
+function selectDuration(button){
+
+    document
+        .querySelectorAll(".duration")
+        .forEach(item=>{
+            item.classList.remove("active");
+        });
+
+    button.classList.add("active");
+
+    selectedDuration =
+        button.dataset.duration;
+
+}
+
+
+/* Create license */
+
+async function createLicense(){
+
+    const password =
+        document
+        .getElementById("adminPassword")
+        .value
+        .trim();
+
+    const button =
+        document.getElementById("createButton");
+
+    const loading =
+        document.getElementById("loading");
+
+    const error =
+        document.getElementById("errorBox");
+
+    const result =
+        document.getElementById("resultBox");
+
+
+    error.style.display="none";
+    result.style.display="none";
+
+
+    if(!password){
+
+        showError(
+            "Please enter the admin password."
+        );
+
+        return;
+    }
+
+
+    if(!selectedDuration){
+
+        showError(
+            "Please select a license duration."
+        );
+
+        return;
+    }
+
+
+    button.disabled=true;
+    loading.style.display="flex";
+
+
+    try{
+
+        const response =
+            await fetch(
+                FUNCTION_URL,
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+
+                        admin_secret:
+                            password,
+
+                        duration:
+                            selectedDuration
+
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok ||
+           !data.success){
+
+            let message =
+                data.error ||
+                "License creation failed.";
+
+            if(message==="UNAUTHORIZED"){
+                message =
+                    "Admin password is incorrect.";
+            }
+
+            throw new Error(message);
+        }
+
+
+        document
+            .getElementById("licenseKey")
+            .textContent =
+                data.license_key || "—";
+
+
+        document
+            .getElementById("topic")
+            .textContent =
+                data.topic || "—";
+
+
+        document
+            .getElementById("durationResult")
+            .textContent =
+                formatDuration(
+                    data.duration
+                );
+
+
+        document
+            .getElementById("expires")
+            .textContent =
+                data.expires_at
+                ? formatDate(data.expires_at)
+                : "NEVER";
+
+
+        result.style.display="block";
+
+
+        result.scrollIntoView({
+            behavior:"smooth",
+            block:"center"
+        });
+
+
+    }catch(err){
+
+        showError(
+            err.message ||
+            "Connection error."
+        );
+
+    }finally{
+
+        button.disabled=false;
+        loading.style.display="none";
+
+    }
+
+}
+
+
+/* Error */
+
+function showError(message){
+
+    const box =
+        document.getElementById("errorBox");
+
+    box.textContent =
+        "⚠ " + message;
+
+    box.style.display="block";
+}
+
+
+/* Duration text */
+
+function formatDuration(value){
+
+    const names={
+        "1day":"1 DAY",
+        "1week":"1 WEEK",
+        "1month":"1 MONTH",
+        "1year":"1 YEAR",
+        "unlimited":"UNLIMITED"
+    };
+
+    return names[value] || value;
+}
+
+
+/* Date */
+
+function formatDate(value){
+
+    const date =
+        new Date(value);
+
+    return date.toLocaleString(
+        undefined,
+        {
+            year:"numeric",
+            month:"short",
+            day:"numeric",
+            hour:"2-digit",
+            minute:"2-digit"
+        }
+    );
+}
+
+
+/* Copy */
+
+async function copyValue(
+    elementId,
+    button
+){
+
+    const text =
+        document
+        .getElementById(elementId)
+        .textContent
+        .trim();
+
+
+    if(!text || text==="—")
+        return;
+
+
+    try{
+
+        await navigator
+            .clipboard
+            .writeText(text);
+
+        const old =
+            button.textContent;
+
+        button.textContent="COPIED";
+
+        setTimeout(()=>{
+            button.textContent=old;
+        },1200);
+
+    }catch(e){
+
+        alert(
+            "Copy failed. Please copy manually."
+        );
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
